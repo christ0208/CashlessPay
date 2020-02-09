@@ -1,26 +1,11 @@
 package mainsystem;
 
-import java.util.Vector;
-
-import commands.CallbackInterface;
-import handlers.AddNewMembershipHandler;
-import handlers.DepositMoneyHandler;
-import handlers.DoPaymentHandler;
-import handlers.VerifyMembershipHandler;
+import handlers.MainMenuHandler;
 
 public class MainSystem {
-	private Vector<CallbackInterface> handlers = new Vector<CallbackInterface>();
 
 	public MainSystem() {
-		// TODO Auto-generated constructor stub
-		initializeHandlers();
-	}
-	
-	private void initializeHandlers() {
-		handlers.add(new AddNewMembershipHandler());
-		handlers.add(new VerifyMembershipHandler());
-		handlers.add(new DepositMoneyHandler());
-		handlers.add(new DoPaymentHandler());
+		(new MainMenuHandler()).execute();
 	}
 	
 	public static void main(String[] args) {

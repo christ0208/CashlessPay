@@ -3,6 +3,11 @@ package factories;
 import components.Membership;
 
 public class MembershipFactory implements BaseFactory{
+	private static MembershipFactory membershipFactory = new MembershipFactory();
+	
+	public static MembershipFactory getInstance() {
+		return membershipFactory;
+	}
 
 	@Override
 	public Membership makeMembership(String name, String email, String phoneNumber) {
