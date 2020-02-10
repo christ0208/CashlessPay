@@ -4,9 +4,13 @@ import java.util.Scanner;
 
 import commands.CallbackInterface;
 import factories.MembershipFactory;
+import repositories.MembershipRepository;
+import validators.EmailValidator;
 
 public class RegisterNewMembershipHandler implements CallbackInterface {
+	private MembershipRepository membershipRepository = MembershipRepository.getInstance();
 	private MembershipFactory membershipFactory = MembershipFactory.getInstance();
+	private EmailValidator emailValidator = new EmailValidator();
 	private Scanner scan = new Scanner(System.in);
 	
 	@Override
@@ -14,6 +18,9 @@ public class RegisterNewMembershipHandler implements CallbackInterface {
 		String name = askName();
 		String email = askEmail();
 		String phoneNumber = askPhoneNumber();
+		
+		membershipRepository.insert(membershipFactory.makeMembership(name, email, phoneNumber));
+		System.out.println("Success register new membership");
 	}
 	
 	private String askName() {
@@ -27,9 +34,10 @@ public class RegisterNewMembershipHandler implements CallbackInterface {
 	
 	private String askEmail() {
 		String input = "";
-//		do {
-//			
-//		}while();
+		do {
+			System.out.println("Input member's email [Must be in email format, i.e. test.ing@test.com]: ");
+			input = scan.nextLine();
+		}while(!emailValidator.validate(input));
 		return input;
 	}
 	

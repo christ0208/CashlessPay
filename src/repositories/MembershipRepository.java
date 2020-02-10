@@ -23,4 +23,10 @@ public class MembershipRepository extends BaseRepository{
 			System.out.printf("| %36s | %15s | %15s | %12s | %13d |", membership.getId(), membership.getName(), membership.getPhoneNumber(), membership.getTotalSavings());
 		}
 	}
+	
+	@Override
+	public void insert(Object newObject) {
+		if(newObject instanceof Membership)
+			memberships.add((Membership) newObject);
+	}
 }
