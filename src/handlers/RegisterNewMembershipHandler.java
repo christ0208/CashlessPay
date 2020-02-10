@@ -21,6 +21,7 @@ public class RegisterNewMembershipHandler implements CallbackInterface {
 		
 		membershipRepository.insert(membershipFactory.makeMembership(name, email, phoneNumber));
 		System.out.println("Success register new membership");
+		scan.nextLine();
 	}
 	
 	private String askName() {
