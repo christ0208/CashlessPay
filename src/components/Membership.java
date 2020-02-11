@@ -5,11 +5,11 @@ import mutators.MembershipMutators;
 import services.GenerateUUIDService;
 
 public class Membership implements MembershipAccessors, MembershipMutators{
-	private String id;
-	private String name;
-	private String email;
-	private String phoneNumber;
-	private Integer totalSavings;
+	protected String id;
+	protected String name;
+	protected String email;
+	protected String phoneNumber;
+	protected Integer totalSavings;
 	
 	public Membership() {
 	}
@@ -19,6 +19,15 @@ public class Membership implements MembershipAccessors, MembershipMutators{
 		this.name = name;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
+		this.totalSavings = 100000;
+	}
+	
+	public Membership(Membership membership) {
+		this.id = membership.getId();
+		this.name = membership.getName();
+		this.email = membership.getEmail();
+		this.phoneNumber = membership.getPhoneNumber();
+		this.totalSavings = membership.getTotalSavings();
 	}
 	
 	@Override

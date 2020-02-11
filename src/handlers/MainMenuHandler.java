@@ -4,11 +4,13 @@ import java.util.Scanner;
 import java.util.Vector;
 
 import commands.CallbackInterface;
+import utils.ClearScreen;
 
 public class MainMenuHandler implements CallbackInterface{
 	private Scanner scan = new Scanner(System.in);
 	private Vector<CallbackInterface> handlers = new Vector<CallbackInterface>();
 	private ShowAllMembershipHandler showAllMembershipHandler = new ShowAllMembershipHandler();
+	private ClearScreen clearScreen = ClearScreen.getInstance();
 	
 	private final int EXIT_MENU = 4; 
 
@@ -27,6 +29,7 @@ public class MainMenuHandler implements CallbackInterface{
 	private void showMainMenu() {
 		int input = 0;
 		do {
+			clearScreen.clear();
 			showAllMemberships();
 			showMainMenuOptions();
 			input = scanNumber();
@@ -35,6 +38,9 @@ public class MainMenuHandler implements CallbackInterface{
 	}
 	
 	private void showMainMenuOptions() {
+		System.out.println("");
+		System.out.println("Cashless Pay");
+		System.out.println("============");
 		System.out.println("1. Register New Membership");
 		System.out.println("2. Verify Membership");
 		System.out.println("3. Manage Money");
@@ -51,7 +57,6 @@ public class MainMenuHandler implements CallbackInterface{
 		try {
 			input = scan.nextInt();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			input = -1;
 		}
 		scan.nextLine();

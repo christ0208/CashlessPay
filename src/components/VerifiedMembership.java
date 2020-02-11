@@ -10,6 +10,11 @@ public class VerifiedMembership extends Membership implements VerifiedMembership
 		super(name, email, phoneNumber);
 	}
 	
+	public VerifiedMembership(Membership membership) {
+		super(membership);
+		this.totalPoints = 0;
+	}
+	
 	@Override
 	public Integer getTotalPoints() {
 		return this.totalPoints;

@@ -5,21 +5,24 @@ import java.util.Scanner;
 import commands.CallbackInterface;
 import factories.MembershipFactory;
 import repositories.MembershipRepository;
+import utils.ClearScreen;
 import validators.EmailValidator;
 
 public class RegisterNewMembershipHandler implements CallbackInterface {
+	private Scanner scan = new Scanner(System.in);
 	private MembershipRepository membershipRepository = MembershipRepository.getInstance();
 	private MembershipFactory membershipFactory = MembershipFactory.getInstance();
 	private EmailValidator emailValidator = new EmailValidator();
-	private Scanner scan = new Scanner(System.in);
+	private ClearScreen clearScreen = ClearScreen.getInstance();
 	
 	@Override
 	public void execute() {
+		clearScreen.clear();
 		String name = askName();
 		String email = askEmail();
 		String phoneNumber = askPhoneNumber();
 		
-		membershipRepository.insert(membershipFactory.makeMembership(name, email, phoneNumber));
+		membershipRepository.insert(membershipFactory.create(name, email, phoneNumber));
 		System.out.println("Success register new membership");
 		scan.nextLine();
 	}
@@ -27,7 +30,7 @@ public class RegisterNewMembershipHandler implements CallbackInterface {
 	private String askName() {
 		String input = "";
 		do {
-			System.out.println("Input member's name [min. 5 characters]: ");
+			System.out.print("Input member's name [min. 5 characters]: ");
 			input = scan.nextLine();
 		}while(input.length() < 5);
 		return input;
@@ -36,7 +39,7 @@ public class RegisterNewMembershipHandler implements CallbackInterface {
 	private String askEmail() {
 		String input = "";
 		do {
-			System.out.println("Input member's email [Must be in email format, i.e. test.ing@test.com]: ");
+			System.out.print("Input member's email [Must be in email format, i.e. test.ing@test.com]: ");
 			input = scan.nextLine();
 		}while(!emailValidator.validate(input));
 		return input;
@@ -45,7 +48,7 @@ public class RegisterNewMembershipHandler implements CallbackInterface {
 	private String askPhoneNumber() {
 		String input = "";
 		do {
-			System.out.println("Input member's phone number [10-12 characters, starts with '+62']: ");
+			System.out.print("Input member's phone number [10-12 characters, starts with '+62']: ");
 			input = scan.nextLine();
 		}while(!input.startsWith("+62") || input.length() < 10 || input.length() > 12);
 		return input;
