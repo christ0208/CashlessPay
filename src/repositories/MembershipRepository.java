@@ -48,12 +48,12 @@ public class MembershipRepository extends BaseRepository{
 			return;
 		}
 		
-		System.out.printf("| %-36s | %-15s | %-25s | %-12s | %-13s | %-12s |\n", "Member ID", "Name", "Email", "Phone Number", "Total Savings", "Total Points");
+		System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13s | %-12s |\n", "Member ID", "Name", "Email", "Phone Number", "Total Savings", "Total Points");
 		for (Membership membership : memberships) {
 			if(membership instanceof VerifiedMembership)
-				System.out.printf("| %-36s | %-15s | %-25s | %-12s | %-13d | %-12d |\n", membership.getId(), membership.getName(), membership.getEmail(), membership.getPhoneNumber(), membership.getTotalSavings(), ((VerifiedMembership) membership).getTotalPoints());
+				System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13d | %-12d |\n", membership.getId(), membership.getUser().getName(), membership.getUser().getEmail(), membership.getUser().getPhoneNumber(), membership.getTotalSavings(), ((VerifiedMembership) membership).getTotalPoints());
 			else
-				System.out.printf("| %-36s | %-15s | %-25s | %-12s | %-13d | %-12s |\n", membership.getId(), membership.getName(), membership.getEmail(), membership.getPhoneNumber(), membership.getTotalSavings(), "-");
+				System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13d | %-12s |\n", membership.getId(), membership.getUser().getName(), membership.getUser().getEmail(), membership.getUser().getPhoneNumber(), membership.getTotalSavings(), "-");
 		}
 	}
 	
@@ -72,6 +72,22 @@ public class MembershipRepository extends BaseRepository{
 	public Membership getById(String id) {
 		for (Membership membership : memberships) {
 			if(membership.getId().equals(id)) return membership;
+		}
+		
+		return null;
+	}
+	
+	public Membership getByEmail(String email) {
+		for (Membership membership : memberships) {
+			if(membership.getUser().getEmail().equals(email)) return membership;
+		}
+		
+		return null;
+	}
+	
+	public Membership getByPhoneNumber(String phoneNumber) {
+		for (Membership membership : memberships) {
+			if(membership.getUser().getPhoneNumber().equals(phoneNumber)) return membership;
 		}
 		
 		return null;

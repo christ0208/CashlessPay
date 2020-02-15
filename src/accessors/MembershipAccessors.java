@@ -1,9 +1,9 @@
 package accessors;
 
+import components.User;
+
 public interface MembershipAccessors {
 	public String getId();
-	public String getName();
-	public String getEmail();
-	public String getPhoneNumber();
+	public User getUser();
 	public Integer getTotalSavings();
 }

@@ -9,10 +9,9 @@ import utils.ClearScreen;
 public class MainMenuHandler implements CallbackInterface{
 	private Scanner scan = new Scanner(System.in);
 	private Vector<CallbackInterface> handlers = new Vector<CallbackInterface>();
-	private ShowAllMembershipHandler showAllMembershipHandler = new ShowAllMembershipHandler();
 	private ClearScreen clearScreen = ClearScreen.getInstance();
 	
-	private final int EXIT_MENU = 4; 
+	private final int EXIT_MENU = 5; 
 
 	@Override
 	public void execute() {
@@ -22,15 +21,15 @@ public class MainMenuHandler implements CallbackInterface{
 
 	private void initializeHandlers() {
 		handlers.add(new RegisterNewMembershipHandler());
+		handlers.add(new ShowAllMembershipHandler());
 		handlers.add(new VerifyMembershipHandler());
-		handlers.add(new ManageMoneyHandler());
+		handlers.add(new DepositMoneyHandler());
 	}
 	
 	private void showMainMenu() {
 		int input = 0;
 		do {
 			clearScreen.clear();
-			showAllMemberships();
 			showMainMenuOptions();
 			input = scanNumber();
 			redirection(input);
@@ -42,14 +41,11 @@ public class MainMenuHandler implements CallbackInterface{
 		System.out.println("Cashless Pay");
 		System.out.println("============");
 		System.out.println("1. Register New Membership");
-		System.out.println("2. Verify Membership");
-		System.out.println("3. Manage Money");
-		System.out.println("4. Exit");
+		System.out.println("2. Show All Membership");
+		System.out.println("3. Verify Membership");
+		System.out.println("4. Deposit Money");
+		System.out.println("5. Exit");
 		System.out.print("Choose >> ");
-	}
-	
-	private void showAllMemberships() {
-		showAllMembershipHandler.execute();
 	}
 	
 	private int scanNumber() {

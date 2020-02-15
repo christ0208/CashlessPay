@@ -10,7 +10,6 @@ import utils.ClearScreen;
 
 public class DepositMoneyHandler implements CallbackInterface {
 	private Scanner scan = new Scanner(System.in);
-	private ShowAllMembershipHandler showAllMembershipHandler = new ShowAllMembershipHandler();
 	private MembershipRepository membershipRepository = MembershipRepository.getInstance();
 	private ClearScreen clearScreen = ClearScreen.getInstance();
 	
@@ -18,34 +17,32 @@ public class DepositMoneyHandler implements CallbackInterface {
 	public void execute() {
 		clearScreen.clear();
 		if(membershipRepository.totalData() == 0) {
-			System.out.println("");
+			System.out.println("There's no membership registered");
+			scan.nextLine();
+			return;
 		}
 		
-		showAllMemberships();
-		int index = askIndex();
-		int added = askAddSaving();
+		String email = askEmail();
+		Membership membership = membershipRepository.getByEmail(email);
+		if(membership == null) {
+			System.out.println("Membership not found");
+			scan.nextLine();
+			return;
+		}
 		
-		Membership selectedMembership = membershipRepository.getByIndex(index);
-		selectedMembership.increaseTotalSavings(added);
+		showMembership(membership);
+		String answer = askConfirmation();
 		
-		if(selectedMembership instanceof VerifiedMembership)
-			((VerifiedMembership) selectedMembership).increaseTotalPoints(added);
-		
-		System.out.println("Success add deposit money");
-		scan.nextLine();
-	}
-	
-	private void showAllMemberships() {
-		showAllMembershipHandler.execute();
-	}
-	
-	private int askIndex() {
-		int input = 0;
-		do {
-			System.out.printf("Input index that you want to deposit money to [1-%d]: ", membershipRepository.totalData());
-			input = scanNumber();
-		}while(!membershipRepository.findIndex(input));
-		return input;
+		if(answer.equals("Yes")) {
+			int added = askAddSaving();
+			membership.increaseTotalSavings(added);
+			
+			if(membership instanceof VerifiedMembership)
+				((VerifiedMembership) membership).increaseTotalPoints(added);
+			
+			System.out.println("Success add deposit money");
+			scan.nextLine();
+		}
 	}
 	
 	private int scanNumber() {
@@ -57,6 +54,29 @@ public class DepositMoneyHandler implements CallbackInterface {
 		}
 		scan.nextLine();
 		return input;
+	}
+	
+	private void showMembership(Membership membership) {
+		System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13s |\n", "Member ID", "Name", "Email", "Phone Number", "Total Savings");
+		System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13d |\n", membership.getId(), membership.getUser().getName(), membership.getUser().getEmail(), membership.getUser().getPhoneNumber(), membership.getTotalSavings());
+	}
+	
+	private String askEmail() {
+		String input = "";
+		do {
+			System.out.print("Input email of membership [must not empty]: ");
+			input = scan.nextLine();
+		}while(input.equals(""));
+		return input;
+	}
+	
+	private String askConfirmation() {
+		String answer = "";
+		do {
+			System.out.print("Are you sure this is your data [Yes | No]? ");
+			answer = scan.nextLine();
+		}while(!answer.equals("Yes") && !answer.equals("No"));
+		return answer;
 	}
 	
 	private int askAddSaving() {

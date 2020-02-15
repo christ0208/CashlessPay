@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import commands.CallbackInterface;
 import components.Membership;
+import components.VerifiedMembership;
 import repositories.MembershipRepository;
 import utils.ClearScreen;
 
@@ -16,46 +17,58 @@ public class VerifyMembershipHandler implements CallbackInterface {
 	@Override
 	public void execute() {
 		clearScreen.clear();
-		Vector<Membership> unverifiedMemberships = showUnverifiedMemberships();
 		
-		if(unverifiedMemberships.isEmpty()) {
-			System.out.println("There's no unverified memberships");
+		if(membershipRepository.totalData() == 0) {
+			System.out.println("There is no membership registered");
 			scan.nextLine();
 			return;
 		}
 		
-		int input = 0;
-		do {
-			System.out.printf("Input index you want to verify [1-%d]: ", unverifiedMemberships.size());
-			input = scanNumber();
-		}while(input < 1 || input > unverifiedMemberships.size());
+		String email = askEmail();
 		
-		membershipRepository.verifyUser(unverifiedMemberships.get(input - 1));
-		System.out.println("Verify Membership Success");
-		scan.nextLine();
+		Membership membership = membershipRepository.getByEmail(email);
+		if(membership == null) {
+			System.out.println("Membership not found");
+			scan.nextLine();
+			return;
+		} else if(membership instanceof VerifiedMembership) {
+			System.out.println("This membership already verified");
+			scan.nextLine();
+			return;
+		}
+		
+		showMembership(membership);
+		String answer = askConfirmation();
+		
+		if(answer.equals("Yes")) {
+			membershipRepository.verifyUser(membership);
+			System.out.println("Verify Membership Success");
+			scan.nextLine();
+		}
 	}
 	
-	private int scanNumber() {
-		int input = 0;
-		try {
-			input = scan.nextInt();
-		} catch (Exception e) {
-			input = -1;
-		}
-		scan.nextLine();
+	private void showMembership(Membership membership) {
+		System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13s |\n", "Member ID", "Name", "Email", "Phone Number", "Total Savings");
+		System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13d |\n", membership.getId(), membership.getUser().getName(), membership.getUser().getEmail(), membership.getUser().getPhoneNumber(), membership.getTotalSavings());
+	}
+	
+	private String askEmail() {
+		String input = "";
+		do {
+			System.out.print("Input email of membership you want to verify [must not empty]: ");
+			input = scan.nextLine();
+		}while(input.equals(""));
 		return input;
 	}
 	
-	private Vector<Membership> showUnverifiedMemberships() {
-		Vector<Membership> unverifiedMemberships = membershipRepository.getUnverifiedUser();
+	private String askConfirmation() {
+		String input = "";
+		do {
+			System.out.print("Are you sure this is your data [Yes | No]? ");
+			input = scan.nextLine();
+		}while(!input.equals("Yes") && !input.equals("No"));
 		
-		if(unverifiedMemberships.isEmpty()) return new Vector<Membership>();
-		
-		System.out.printf("| %-36s | %-15s | %-25s | %-12s | %-13s |\n", "No", "Name", "Email", "Phone Number", "Total Savings");
-		for (Membership membership : unverifiedMemberships) {
-			System.out.printf("| %-36s | %-15s | %-25s | %-12s | %-13d |\n", membership.getId(), membership.getName(), membership.getEmail(), membership.getPhoneNumber(), membership.getTotalSavings());
-		}
-		return unverifiedMemberships;
+		return input;
 	}
 
 }

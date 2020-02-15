@@ -41,7 +41,7 @@ public class RegisterNewMembershipHandler implements CallbackInterface {
 		do {
 			System.out.print("Input member's email [Must be in email format, i.e. test.ing@test.com]: ");
 			input = scan.nextLine();
-		}while(!emailValidator.validate(input));
+		}while(!emailValidator.validate(input) || membershipRepository.getByEmail(input) != null);
 		return input;
 	}
 	
@@ -50,7 +50,7 @@ public class RegisterNewMembershipHandler implements CallbackInterface {
 		do {
 			System.out.print("Input member's phone number [10-12 characters, starts with '+62']: ");
 			input = scan.nextLine();
-		}while(!input.startsWith("+62") || input.length() < 10 || input.length() > 12);
+		}while(!input.startsWith("+62") || input.length() < 12 || input.length() > 14 || membershipRepository.getByPhoneNumber(input) != null);
 		return input;
 	}
 
