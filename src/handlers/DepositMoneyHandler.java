@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import commands.CallbackInterface;
 import components.Membership;
+import components.User;
 import components.VerifiedMembership;
 import repositories.MembershipRepository;
 import utils.ClearScreen;
@@ -57,8 +58,19 @@ public class DepositMoneyHandler implements CallbackInterface {
 	}
 	
 	private void showMembership(Membership membership) {
-		System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13s |\n", "Member ID", "Name", "Email", "Phone Number", "Total Savings");
-		System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13d |\n", membership.getId(), membership.getUser().getName(), membership.getUser().getEmail(), membership.getUser().getPhoneNumber(), membership.getTotalSavings());
+		System.out.println("Member ID: " + membership.getId());
+		System.out.println("Total Savings: Rp. " + membership.getTotalSavings());
+		if(membership instanceof VerifiedMembership)
+			System.out.println("Total Points: Rp. " + ((VerifiedMembership) membership).getTotalPoints());
+		else
+			System.out.println("Total Points: -");
+		System.out.println("Users: ");
+		System.out.printf("| %-2s | %-15s | %-25s | %-14s |\n", "No", "Name", "Email", "Phone Number");
+		int index = 1;
+		for (User currUser : membership.getUsers()) {
+			System.out.printf("| %-2d | %-15s | %-25s | %-14s |\n", index++, currUser.getName(), currUser.getEmail(), currUser.getPhoneNumber());
+		}
+		System.out.println("");
 	}
 	
 	private String askEmail() {

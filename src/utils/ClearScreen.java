@@ -2,7 +2,7 @@ package utils;
 
 public class ClearScreen {
 	private static ClearScreen instance = new ClearScreen();
-	private final int ENTER_AMOUNT = 50;
+	private final int ENTER_AMOUNT = 30;
 	
 	public static ClearScreen getInstance() {
 		return instance;

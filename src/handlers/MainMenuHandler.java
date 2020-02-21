@@ -38,8 +38,14 @@ public class MainMenuHandler implements CallbackInterface{
 	
 	private void showMainMenuOptions() {
 		System.out.println("");
-		System.out.println("Cashless Pay");
-		System.out.println("============");
+		System.out.println(".|'''',            '||    '||`                   '||'''|,            "); 
+		System.out.println("||                  ||     ||                     ||   ||            "); 
+		System.out.println("||      '''|. ('''' ||''|, || .|''|,(''''(''''    ||...|'''|.'||  ||`"); 
+		System.out.println("||     .|''||  `'') ||  || || ||..|| `'') `'')    ||   .|''|| `|..|| "); 
+		System.out.println("`|....'`|..||.`...'.||  ||.||.`|... `...'`...'   .||   `|..||.    || "); 
+		System.out.println("                                                               ,  |' "); 
+		System.out.println("                                                                ''   "); 
+		System.out.println("=====================================================================");
 		System.out.println("1. Register New Membership");
 		System.out.println("2. Show All Membership");
 		System.out.println("3. Verify Membership");

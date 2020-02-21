@@ -3,6 +3,7 @@ package repositories;
 import java.util.Vector;
 
 import components.Membership;
+import components.User;
 import components.VerifiedMembership;
 import factories.VerifiedMembershipFactory;
 
@@ -11,9 +12,9 @@ public class MembershipRepository extends BaseRepository{
 	private Vector<Membership> memberships = new Vector<Membership>();
 	
 	public MembershipRepository() {
-		memberships.add(new Membership("testing aa", "testing.aa@gmail.com", "+62612312321"));
-		memberships.add(new Membership("testing bb", "testing.bb@gmail.com", "+6212121221"));
-		memberships.add(new Membership("testing cc", "testing.cc@gmail.com", "+6200201020"));
+//		memberships.add(new Membership("testing aa", "testing.aa@gmail.com", "+62612312321"));
+//		memberships.add(new Membership("testing bb", "testing.bb@gmail.com", "+6212121221"));
+//		memberships.add(new Membership("testing cc", "testing.cc@gmail.com", "+6200201020"));
 	}
 	
 	public static MembershipRepository getInstance(){
@@ -48,12 +49,19 @@ public class MembershipRepository extends BaseRepository{
 			return;
 		}
 		
-		System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13s | %-12s |\n", "Member ID", "Name", "Email", "Phone Number", "Total Savings", "Total Points");
 		for (Membership membership : memberships) {
-			if(membership instanceof VerifiedMembership)
-				System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13d | %-12d |\n", membership.getId(), membership.getUser().getName(), membership.getUser().getEmail(), membership.getUser().getPhoneNumber(), membership.getTotalSavings(), ((VerifiedMembership) membership).getTotalPoints());
-			else
-				System.out.printf("| %-36s | %-15s | %-25s | %-14s | %-13d | %-12s |\n", membership.getId(), membership.getUser().getName(), membership.getUser().getEmail(), membership.getUser().getPhoneNumber(), membership.getTotalSavings(), "-");
+			System.out.println("Member ID: " + membership.getId());
+			System.out.println("Total Savings: " + membership.getTotalSavings());
+			if(membership instanceof VerifiedMembership) 
+				System.out.println("Total Points: " + ((VerifiedMembership) membership).getTotalPoints());
+			else 
+				System.out.println("Total Points: -");
+			
+			System.out.printf("| %-15s | %-25s | %-14s |\n", "Name", "Email", "Phone Number");
+			for (User currUser : membership.getUsers()) {
+				System.out.printf("| %-15s | %-25s | %-14s |\n", currUser.getName(), currUser.getEmail(), currUser.getPhoneNumber());
+			}
+			System.out.println("");
 		}
 	}
 	
@@ -79,7 +87,9 @@ public class MembershipRepository extends BaseRepository{
 	
 	public Membership getByEmail(String email) {
 		for (Membership membership : memberships) {
-			if(membership.getUser().getEmail().equals(email)) return membership;
+			for (User currUser : membership.getUsers()) {
+				if(currUser.getEmail().equals(email)) return membership;
+			}
 		}
 		
 		return null;
@@ -87,7 +97,9 @@ public class MembershipRepository extends BaseRepository{
 	
 	public Membership getByPhoneNumber(String phoneNumber) {
 		for (Membership membership : memberships) {
-			if(membership.getUser().getPhoneNumber().equals(phoneNumber)) return membership;
+			for (User currUser : membership.getUsers()) {
+				if(currUser.getPhoneNumber().equals(phoneNumber)) return membership;
+			}
 		}
 		
 		return null;

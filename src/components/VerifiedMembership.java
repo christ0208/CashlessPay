@@ -1,13 +1,15 @@
 package components;
 
+import java.util.Vector;
+
 import accessors.VerifiedMembershipAccessors;
 import mutators.VerifiedMembershipMutators;
 
 public class VerifiedMembership extends Membership implements VerifiedMembershipAccessors, VerifiedMembershipMutators{
 	private Integer totalPoints;
 
-	public VerifiedMembership(String name, String email, String phoneNumber) {
-		super(name, email, phoneNumber);
+	public VerifiedMembership(Vector<User> users) {
+		super(users);
 	}
 	
 	public VerifiedMembership(Membership membership) {

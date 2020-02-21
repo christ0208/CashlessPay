@@ -1,7 +1,10 @@
 package factories;
 
+import java.util.Vector;
+
 import components.Membership;
+import components.User;
 
 public interface BaseFactory {
-	public Membership create(String name, String email, String phoneNumber);
+	public Membership create(Vector<User> users);
 }

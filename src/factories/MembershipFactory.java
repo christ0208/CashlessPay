@@ -1,6 +1,9 @@
 package factories;
 
+import java.util.Vector;
+
 import components.Membership;
+import components.User;
 
 public class MembershipFactory implements BaseFactory{
 	private static MembershipFactory membershipFactory = new MembershipFactory();
@@ -10,9 +13,9 @@ public class MembershipFactory implements BaseFactory{
 	}
 
 	@Override
-	public Membership create(String name, String email, String phoneNumber) {
+	public Membership create(Vector<User> users) {
 		// TODO Auto-generated method stub
-		return new Membership(name, email, phoneNumber);
+		return new Membership(users);
 	}
 	
 }

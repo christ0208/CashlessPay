@@ -1,26 +1,28 @@
 package components;
 
+import java.util.Vector;
+
 import accessors.MembershipAccessors;
 import mutators.MembershipMutators;
 import services.GenerateUUIDService;
 
 public class Membership implements MembershipAccessors, MembershipMutators{
 	protected String id;
-	protected User user;
+	protected Vector<User> users;
 	protected Integer totalSavings;
 	
 	public Membership() {
 	}
 	
-	public Membership(String name, String email, String phoneNumber) {
-		this.user = new User(name, email, phoneNumber);
+	public Membership(Vector<User> users) {
+		this.users = users;
 		
 		this.id = GenerateUUIDService.generate();
 		this.totalSavings = 100000;
 	}
 	
 	public Membership(Membership membership) {
-		this.user = new User(membership.getUser().getName(), membership.getUser().getEmail(), membership.getUser().getPhoneNumber());
+		this.users = membership.users;
 		
 		this.id = membership.getId();
 		this.totalSavings = membership.getTotalSavings();
@@ -30,8 +32,8 @@ public class Membership implements MembershipAccessors, MembershipMutators{
 	public String getId() {
 		return this.id;
 	}
-	public User getUser() {
-		return this.user;
+	public Vector<User> getUsers() {
+		return this.users;
 	}
 	@Override
 	public Integer getTotalSavings() {
